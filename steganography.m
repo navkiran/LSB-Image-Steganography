@@ -7,7 +7,7 @@ if numberOfColorChannels > 1
     I = rgb2gray(I);
 end
 L=256;
-image_hide=I;
+imageWithHiddenData=I;
 
 message=input('Please enter the message you want to hide: ','s');
 % Each character occupies a byte, so total bits can be found by multiplying
@@ -30,16 +30,14 @@ for i=1:rows
         
         if bitCount<=len
             %Obtain the LSB of the grey level of the pixel
-            LSB=mod(I(i,j),2);
+            LSB=bitget(I(i,j),1);
             
             %Convert the bit from the message to numeric form
-            a=str2double(binary_sequence(bitCount));
+            bitInMessage=str2double(binary_sequence(bitCount));
 
-            %Perform XOR operation between the bit and the LSB
-            temp=double(xor(LSB,a));
-            
-            %Change the bit of the image_hide accordingly
-            image_hide(i,j)=I(i,j)+temp;
+            % If LSB's are different XOR will be 1 and LSB will be flipped
+            % to match bitInMessage
+            imageWithHiddenData(i,j) = imageWithHiddenData(i,j) + double(xor(LSB,bitInMessage));
             
             bitCount=bitCount+1;
         end
@@ -51,8 +49,8 @@ imshow(I);
 title('Input Image');
 
 subplot(1,2,2);
-imshow(image_hide);
+imshow(imageWithHiddenData);
 title('Image with Hidden Data');
 
-imwrite(image_hide,'output.png')
+imwrite(imageWithHiddenData,'output.png')
 
