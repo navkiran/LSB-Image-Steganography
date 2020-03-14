@@ -12,7 +12,11 @@ imageWithHiddenData=I;
 message=input('Please enter the message you want to hide: ','s');
 % Each character occupies a byte, so total bits can be found by multiplying
 % string length by 8
-len=strlength(message)*8; 
+len=strlength(message)*8;
+% error handling
+if strlength(message) > (rows*columns)
+    disp('Cover image size is not enough to encode full message!')
+end
 ascii_values=uint8(message);   
 ascii2binary=dec2bin(ascii_values,8);
 
