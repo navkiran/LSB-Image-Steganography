@@ -34,10 +34,10 @@ for i=1:rows
             
             %Convert the bit from the message to numeric form
             bitInMessage=str2double(binary_sequence(bitCount));
-
-            % If LSB's are different XOR will be 1 and LSB will be flipped
-            % to match bitInMessage
-            imageWithHiddenData(i,j) = imageWithHiddenData(i,j) + double(xor(LSB,bitInMessage));
+            %Reset LSB
+            imageWithHiddenData(i,j)= bitand(imageWithHiddenData(i,j),0b11111110);
+            %Replace LSB with bitInMessage
+            imageWithHiddenData(i,j) = imageWithHiddenData(i,j) + bitInMessage;
             
             bitCount=bitCount+1;
         end
